@@ -6,6 +6,8 @@ Minhong Sun, Han Yang, Jian Huang, Yihao Guo, Gaopeng Huang, Xuanbin Chen, Duanp
 
 Hangzhou Dianzi University IMOP-lab
 
+## Methods
+### STPe
 <div align=center>
   <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/HeON.png">
 </div>
@@ -26,7 +28,7 @@ Next, we introduce our innovative STPe Segmention framework
 </p>
 
 
-###SpectroConv
+#### SpectroConv Module
 
 <div align=center>
   <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/SpectroConv.png">
