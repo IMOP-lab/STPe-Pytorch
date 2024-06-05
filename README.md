@@ -9,7 +9,7 @@ Hangzhou Dianzi University IMOP-lab
 ## Methods
 ### STPe
 <div align=center>
-  <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/HeON.png"width=80% height=80%>
+  <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/HeON.png"width=70% height=70%>
 </div>
 <p align=center>
   Figure 1: The HeON.overarching framework of the proposed Hybrid-distributed Elastic Ophthalmic Navigation System (HeON) for real-time macular surgery guidance.
@@ -20,7 +20,7 @@ We propose the HeON system, based on the IoMT, an efficient intraoperative stabl
 Next, we introduce our innovative STPe Segmention framework
 
 <div align=center>
-  <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/STPe.png">
+  <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/STPe.png"width=70% height=70%>
 </div>
 <p align=center>
   Figure 2: The overall structure of proposed Stratified Trio-dimensional Pathway Encoding framework.
@@ -29,7 +29,7 @@ Next, we introduce our innovative STPe Segmention framework
 #### SpectroConv Module
 
 <div align=center>
-  <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/SpectroConv.png">
+  <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/SpectroConv.png"width=70% height=70%>
 </div>
 <p align=center>
   Figure 3: SpectroConv Module.
@@ -40,7 +40,7 @@ The SpectroConv Module for extracting intricate time-frequency domain features a
 #### HIT-EAFS Module
 
 <div align=center>
-  <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/HIT-EAFS.png">
+  <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/HIT-EAFS.png"width=70% height=70%>
 </div>
 <p align=center>
   Figure 4: HIT-EAFS Module.
@@ -95,7 +95,7 @@ Ablation experiments were executed based on the OIMHS dataset to evaluate the pr
 ### Reconstruction
 
 <div align=center>
-    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/reconstruction.png">
+    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/reconstruction.png"width=70% height=70%>
 </div>
 <p align=center>
   Figure 9: Reconstruction
