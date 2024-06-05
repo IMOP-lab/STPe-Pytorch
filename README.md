@@ -22,5 +22,13 @@ Next, we introduce our innovative STPe Segmention framework
   <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/STPe.png">
 </div>
 <p align=center>
-  Figure 1: The overall structure of proposed Stratified Trio-dimensional Pathway Encoding framework.
+  Figure 2: The overall structure of proposed Stratified Trio-dimensional Pathway Encoding framework.
+</p>
+
+
+<div align=center>
+  <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/SpectroConv.png">
+</div>
+<p align=center>
+  Figure 3: SpectroConv for extracting intricate time-frequency domain features and nuanced frequency domain information from image data.
 </p>
