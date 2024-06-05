@@ -43,9 +43,20 @@ The SpectroConv Module for extracting intricate time-frequency domain features a
   <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/HIT-EAFS.png">
 </div>
 <p align=center>
-  Figure 2: HIT-EAFS Module.
+  Figure 4: HIT-EAFS Module.
 </p>
 
 HIT-EAFS Module is designed to address the nuanced requirements of capturing both global and local feature representations effectively.
+
+## Experiment
+### Baselines
+### Training Results
+
+<div align=center>
+    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/table/beseline.png">
+</div>
+<p align=center>
+  Figure 5: Compare the results with other models
+</p>
 
 
