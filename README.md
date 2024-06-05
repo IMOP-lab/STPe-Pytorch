@@ -59,4 +59,14 @@ HIT-EAFS Module is designed to address the nuanced requirements of capturing bot
   Figure 5: Compare the results with other models
 </p>
 
+The proposed STPe segmentation results are compared with previous segmentation models, with evaluations across five categories: All (average of all categories), MH (Macular Hole), ME (Macular Edema), RA (Retina), and CR (Choroid). The best values for each metric are displayed in red, the second-best values in blue, and both the best and second-best metrics are indicated with highlights.
+
+<div align=center>
+    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/baseline.png">
+</div>
+<p align=center>
+  Figure 6: Visual segmentation performance 
+</p>
+
+In the OIMHS dataset, visually compare STPe with other 14 segmentation models. We have selected 8 representative sequences for display. In these images, the segmentation results of macular holes are shown in red, macular edema in blue, the retina in yellow, and the choroid in green.
 
