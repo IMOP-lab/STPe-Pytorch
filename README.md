@@ -26,7 +26,7 @@ Next, we introduce our innovative STPe Segmention framework
 </p>
 
 
-SpectroConv Discriminative Synthesis Encoder depicted in Figure 3, initially processes the raw input image in parallel through convolution, Fast Fourier Transform (FFT), and Discrete Wavelet Transform (DWT) operations. Convolutional networks describe spatial details. FFT transitions from the time domain to the frequency domain. By analyzing the global periodic structure and frequency characteristics, it is used to identify and analyze background noise and fine-grain texture differences. Wavelet transform provides multi-scale time-frequency analysis, capturing high frequency, short term and low frequency and long term information for detecting local changes in image features. The encoder also combines attention mechanisms in the frequency and time-frequency domains to refine and emphasize key features within these regions.
+###SpectroConv
 
 <div align=center>
   <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/SpectroConv.png">
