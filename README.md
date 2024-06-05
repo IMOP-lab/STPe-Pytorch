@@ -53,7 +53,7 @@ HIT-EAFS Module is designed to address the nuanced requirements of capturing bot
 ### Training Results
 
 <div align=center>
-    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/table/beseline.png">
+    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/table/baseline.png">
 </div>
 <p align=center>
   Figure 5: Compare the results with other models
