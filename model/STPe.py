@@ -2,7 +2,7 @@ import timm
 from collections import OrderedDict
 import torch
 import torch.nn as nn
-from Model.base_models.resnet import resnet34
+from model.ResNet import resnet34
 from torch.nn import functional as F
 from torch.nn import Module, Conv2d, Parameter, Softmax
 class Encoder(nn.Module):
