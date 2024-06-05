@@ -9,7 +9,7 @@ Hangzhou Dianzi University IMOP-lab
 ## Methods
 ### STPe
 <div align=center>
-  <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/HeON.png">
+  <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/HeON.png"width=80% height=80%>
 </div>
 <p align=center>
   Figure 1: The HeON.overarching framework of the proposed Hybrid-distributed Elastic Ophthalmic Navigation System (HeON) for real-time macular surgery guidance.
@@ -98,7 +98,7 @@ Ablation experiments were executed based on the OIMHS dataset to evaluate the pr
     <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/reconstruction.png">
 </div>
 <p align=center>
-  Figure 8: Reconstruction
+  Figure 9: Reconstruction
 </p>
 
 Example of two corresponding reconstruction outcomes (right) with original OCT images (left). The outcome delineates architectures of opaque retina, the third panel elucidates the transparent condition, highlighting the macular hole (red region) and macular edema (dark blue region).
