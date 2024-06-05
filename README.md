@@ -7,7 +7,7 @@ Minhong Sun, Han Yang, Jian Huang, Yihao Guo, Gaopeng Huang, Xuanbin Chen, Duanp
 Hangzhou Dianzi University IMOP-lab
 
 <div align=center>
-  <img src="https://github.com/IMOP-lab/SASAN-Pytorch/blob/main/images/HeON.png">
+  <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/HeON.png">
 </div>
 <p align=center>
   Figure 1:The overarching framework of the proposed Hybrid-distributed Elastic Ophthalmic Navigation System (HeON) for real-time macular surgery guidance.
