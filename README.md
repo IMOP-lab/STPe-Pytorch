@@ -10,5 +10,17 @@ Hangzhou Dianzi University IMOP-lab
   <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/HeON.png">
 </div>
 <p align=center>
-  Figure 1:The overarching framework of the proposed Hybrid-distributed Elastic Ophthalmic Navigation System (HeON) for real-time macular surgery guidance.
+  Figure 1: The overarching framework of the proposed Hybrid-distributed Elastic Ophthalmic Navigation System (HeON) for real-time macular surgery guidance.
+</p>
+
+We propose the HeON system, based on the IoMT, an efficient intraoperative stable delivery of quantization-aid 3D reconstruction system.
+
+Next, we introduce our innovative STPe Segmention framework
+
+
+<div align=center>
+  <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/STPe.png">
+</div>
+<p align=center>
+  Figure 1: The overall structure of proposed Stratified Trio-dimensional Pathway Encoding framework.
 </p>
