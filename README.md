@@ -75,7 +75,7 @@ In the OIMHS dataset, visually compare STPe with other 14 segmentation models. W
 ### Training Results
 
 <div align=center>
-    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/table/Ablation.png">
+    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/table/Ablation.jpg">
 </div>
 <p align=center>
   Figure 7: Ablation
@@ -84,7 +84,7 @@ In the OIMHS dataset, visually compare STPe with other 14 segmentation models. W
 The ablation of key modules in STPe was studied in the OIMHS data set. LDE (ResNet), GLE (MaxVit), and SCE (SpectroConv Discriminative Synthesis Encoder) corresponded to three branches in the Tri-dimensional Pathway Encoding, and NMCS, HIT-EAFS, and DFM corresponded to three key modules. The assessment included five categories: All, MH, ME, RA, and CR. The best values for each metric are displayed in red, the second-best values in blue, and both the best and second-best metrics are indicated with highlights.
 
 <div align=center>
-    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/Ablation.jpg">
+    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/images/Ablation.png">
 </div>
 <p align=center>
   Figure 8: Visual segmentation performance 
