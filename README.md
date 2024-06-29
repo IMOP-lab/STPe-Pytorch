@@ -53,7 +53,7 @@ HIT-EAFS Module is designed to address the nuanced requirements of capturing bot
 ### Training Results
 
 <div align=center>
-    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/table/baseline.png">
+    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/table/baselinedata.png">
 </div>
 <p align=center>
   Figure 5: Compare the results with other models
@@ -75,7 +75,7 @@ In the OIMHS dataset, visually compare STPe with other 14 segmentation models. W
 ### Training Results
 
 <div align=center>
-    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/table/Ablation.jpg">
+    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/table/ablationdata.jpg">
 </div>
 <p align=center>
   Figure 7: Ablation
