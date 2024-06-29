@@ -75,7 +75,7 @@ In the OIMHS dataset, visually compare STPe with other 14 segmentation models. W
 ### Training Results
 
 <div align=center>
-    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/table/ablationdata.jpg">
+    <img src="https://github.com/IMOP-lab/STPe-Pytorch/blob/main/table/ablationdata.png">
 </div>
 <p align=center>
   Figure 7: Ablation
