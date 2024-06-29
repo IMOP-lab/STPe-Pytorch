@@ -2,9 +2,11 @@ import timm
 from collections import OrderedDict
 import torch
 import torch.nn as nn
-from model.ResNet import resnet34
+from Model.base_models.resnet import resnet34
 from torch.nn import functional as F
 from torch.nn import Module, Conv2d, Parameter, Softmax
+from torch_geometric.nn import GATConv
+from torch_geometric.data import Data
 class Encoder(nn.Module):
     def __init__(self, input_channels):
         super(Encoder, self).__init__()
@@ -308,113 +310,6 @@ class DynamicFusionModule(nn.Module):
         fusion_weight = self.fusion_network(combined_feature)
         fused_feature = fusion_weight * feature1_adjusted + (1 - fusion_weight) * feature2_adjusted
         return fused_feature 
-class MS_CAM(nn.Module):
-    def __init__(self, channels=64, r=4):
-        super(MS_CAM, self).__init__()
-        inter_channels = int(channels // r)
-        self.local_att = nn.Sequential(
-            nn.Conv2d(channels, inter_channels, kernel_size=1, stride=1, padding=0),
-            nn.BatchNorm2d(inter_channels),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(inter_channels, channels, kernel_size=1, stride=1, padding=0),
-            nn.BatchNorm2d(channels),
-        )
-        self.global_att = nn.Sequential(
-            nn.AdaptiveAvgPool2d(1),
-            nn.Conv2d(channels, inter_channels, kernel_size=1, stride=1, padding=0),
-            nn.BatchNorm2d(inter_channels),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(inter_channels, channels, kernel_size=1, stride=1, padding=0),
-            nn.BatchNorm2d(channels),
-        )
-        self.sigmoid = nn.Sigmoid()
-    def forward(self, x):
-        xl = self.local_att(x)
-        xg = self.global_att(x)
-        xlg = xl + xg
-        wei = self.sigmoid(xlg)
-        return x * wei   
-class BasicConv(nn.Module):
-    def __init__(self, in_planes, out_planes, kernel_size, stride=1, padding=0, dilation=1, groups=1, relu=True, bn=True, bias=False):
-        super(BasicConv, self).__init__()
-        self.out_channels = out_planes
-        self.conv = nn.Conv2d(in_planes, out_planes, kernel_size=kernel_size, stride=stride, padding=padding, dilation=dilation, groups=groups, bias=bias)
-        self.bn = nn.BatchNorm2d(out_planes,eps=1e-5, momentum=0.01, affine=True) if bn else None
-        self.relu = nn.ReLU() if relu else None
-    def forward(self, x):
-        x = self.conv(x)
-        if self.bn is not None:
-            x = self.bn(x)
-        if self.relu is not None:
-            x = self.relu(x)
-        return x
-class Flatten(nn.Module):
-    def forward(self, x):
-        return x.view(x.size(0), -1)
-class ChannelGate(nn.Module):
-    def __init__(self, gate_channels, reduction_ratio=16, pool_types=['avg', 'max']):
-        super(ChannelGate, self).__init__()
-        self.gate_channels = gate_channels
-        self.mlp = nn.Sequential(
-            Flatten(),
-            nn.Linear(gate_channels, gate_channels // reduction_ratio),
-            nn.ReLU(),
-            nn.Linear(gate_channels // reduction_ratio, gate_channels)
-            )
-        self.pool_types = pool_types
-    def forward(self, x):
-        channel_att_sum = None
-        for pool_type in self.pool_types:
-            if pool_type=='avg':
-                avg_pool = F.avg_pool2d( x, (x.size(2), x.size(3)), stride=(x.size(2), x.size(3)))
-                channel_att_raw = self.mlp( avg_pool )
-            elif pool_type=='max':
-                max_pool = F.max_pool2d( x, (x.size(2), x.size(3)), stride=(x.size(2), x.size(3)))
-                channel_att_raw = self.mlp( max_pool )
-            elif pool_type=='lp':
-                lp_pool = F.lp_pool2d( x, 2, (x.size(2), x.size(3)), stride=(x.size(2), x.size(3)))
-                channel_att_raw = self.mlp( lp_pool )
-            elif pool_type=='lse':
-                lse_pool = logsumexp_2d(x)
-                channel_att_raw = self.mlp(lse_pool )
-
-            if channel_att_sum is None:
-                channel_att_sum = channel_att_raw
-            else:
-                channel_att_sum = channel_att_sum + channel_att_raw
-        scale = F.sigmoid( channel_att_sum ).unsqueeze(2).unsqueeze(3).expand_as(x)
-        return x * scale
-def logsumexp_2d(tensor):
-    tensor_flatten = tensor.view(tensor.size(0), tensor.size(1), -1)
-    s, _ = torch.max(tensor_flatten, dim=2, keepdim=True)
-    outputs = s + (tensor_flatten - s).exp().sum(dim=2, keepdim=True).log()
-    return outputs
-class ChannelPool(nn.Module):
-    def forward(self, x):
-        return torch.cat( (torch.max(x,1)[0].unsqueeze(1), torch.mean(x,1).unsqueeze(1)), dim=1 )
-class SpatialGate(nn.Module):
-    def __init__(self):
-        super(SpatialGate, self).__init__()
-        kernel_size = 7
-        self.compress = ChannelPool()
-        self.spatial = BasicConv(2, 1, kernel_size, stride=1, padding=(kernel_size-1) // 2, relu=False)
-    def forward(self, x):
-        x_compress = self.compress(x)
-        x_out = self.spatial(x_compress)
-        scale = F.sigmoid(x_out) 
-        return x * scale
-class CBAM(nn.Module):
-    def __init__(self, gate_channels, reduction_ratio=16, pool_types=['avg', 'max'], no_spatial=False):
-        super(CBAM, self).__init__()
-        self.ChannelGate = ChannelGate(gate_channels, reduction_ratio, pool_types)
-        self.no_spatial=no_spatial
-        if not no_spatial:
-            self.SpatialGate = SpatialGate()
-    def forward(self, x):
-        x_out = self.ChannelGate(x)
-        if not self.no_spatial:
-            x_out = self.SpatialGate(x_out)
-        return x_out  
 class nmcs(nn.Module):
     def __init__(self, in_channels,groups=2,):
         super().__init__()
@@ -557,9 +452,9 @@ class AttentionBlock_attunet(nn.Module):
         psi = self.relu(g1 + x1)
         psi = self.psi(psi)
         return skip_connection * psi
-class AttentionDecoder(nn.Module):
+class DilatedAttentionDecoder(nn.Module):
     def __init__(self, channel_list, attention_coefficients, final_out_channels=32, dilation_rate=2):       #
-        super(AttentionDecoder, self).__init__()
+        super(DilatedAttentionDecoder, self).__init__()
 
         self.channel_conv = nn.ModuleList([
             nn.Conv2d(in_channels, final_out_channels, kernel_size=3, padding=dilation_rate, dilation=dilation_rate) for in_channels in channel_list
@@ -633,11 +528,44 @@ class ConvBnRelu(nn.Module):
         if self.has_relu:
             x = self.relu(x)
         return x
+class GATLayer(torch.nn.Module):
+    def __init__(self, in_channels, out_channels, heads=1, concat=True, dropout=0.6):
+        super(GATLayer, self).__init__()
+        self.gat = GATConv(in_channels, out_channels // heads, heads=heads, concat=concat, dropout=dropout)
+
+    def forward(self, x, edge_index):
+        return self.gat(x, edge_index)
+
+
+def create_full_graph_features(feature_map, device):
+    B, C, H, W = feature_map.size()
+    N = H * W  
+    feature_map = feature_map.permute(0, 2, 3, 1).contiguous() 
+    feature_map = feature_map.view(B, N, C)  
+
+
+    edge_index = torch.combinations(torch.arange(N, device=device), r=2, with_replacement=True).t()
+    edge_index = torch.cat([edge_index, edge_index.flip([0])], dim=1)  
+
+    return feature_map.to(device), edge_index.to(device)
+
+
+class GraphAttentionModel(torch.nn.Module):
+    def __init__(self, in_channels, out_channels, heads=8, device=None):
+        super(GraphAttentionModel, self).__init__()
+        self.device = device if device else torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.gat1 = GATLayer(in_channels, out_channels, heads=heads, concat=True).to(self.device)
+
+    def forward(self, feature_map):
+        features, edge_index = create_full_graph_features(feature_map, self.device)
+        gat_features = [self.gat1(features[i].to(self.device), edge_index.to(self.device)) for i in range(features.shape[0])]
+        gat_features = torch.stack(gat_features, dim=0)
+        return gat_features.view(feature_map.shape[0], 512, 16, 16)
+
 class STPe(nn.Module):
     def __init__(self,channel_list,attention_coefficients,num_class,input_channels):
-    # def __init__(self, num_class):
         super(STPe,self).__init__()
-        self.cbam=CBAM(512)
+
         self.backbone =resnet34(pretrained=True)    
         self.Elevate_Merge1 = Elevate_Merge(512)
         self.Elevate_Merge2 = Elevate_Merge(256)
@@ -647,7 +575,6 @@ class STPe(nn.Module):
               pretrained=True,
               features_only=True,
          )  
-        self.ms_cam=MS_CAM(512) 
         self.dim_match_layer1 = DimensionMatchingLayer(64, 64, (256, 256))
         self.dim_match_layer2 = DimensionMatchingLayer(96, 64, (128, 128))
         self.dim_match_layer3= DimensionMatchingLayer(192, 128, (64, 64))
@@ -666,11 +593,13 @@ class STPe(nn.Module):
         self.se= SE(512)
         self.channel_halving_layer = ChannelHalvingLayer(1024)
         self.encoder = Encoder(input_channels=9)
-        self.decoder = AttentionDecoder(
+        self.decoder = DilatedAttentionDecoder(
         channel_list=[320, 320, 640, 1280, 1024], 
         attention_coefficients=[32, 32,64, 128, 256]
          )
         out_planes = num_class
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.Graph = GraphAttentionModel(512, 512, heads=8, device=self.device)
         self.aspp = ASPP(in_channels=512, atrous_rates=[6, 12, 18], out_channels=512) 
         self.nmcs1 = nmcs(in_channels=64)        
         self.nmcs2 = nmcs(in_channels=128)       
@@ -720,7 +649,7 @@ class STPe(nn.Module):
         c3 = self.backbone.layer2(c2)
         c4 = self.backbone.layer3(c3)
         c5 = self.backbone.layer4(c4)
-        c11 = torch.cat([e1, c1], dim=1) 
+        c11 = torch.cat([e1, c1], dim=1)
         c22 = torch.cat([e2, c2], dim=1)
         c33= torch.cat([e3, c3], dim=1)
         c44 = torch.cat([e4, c4], dim=1)
@@ -736,6 +665,8 @@ class STPe(nn.Module):
         c55sum=c55_pam+c55_cam 
         fused_feature= self.feature_fusion(c55sum, global_feature)
         c5_enhance = self.se(fused_feature)
+        c_5=c5_enhance.to(self.device)
+        c5=self.Graph(c_5)  
         a1=self.nmcs1(a1)
         a_1 = torch.cat([a1, c11], dim=1)
         a2=self.nmcs1(a2)
@@ -744,7 +675,6 @@ class STPe(nn.Module):
         a_3 = torch.cat([a3, c33], dim=1)
         a4=self.nmcs3(a4)
         a_4 = torch.cat([a4, c44], dim=1)
-        a5=self.ms_cam(a5)
         a5=self.nmcs4(a5)
         b, c, h, w = a5.size()
         a5_flat = a5.view(b, c, h * w).permute(0, 2, 1)
@@ -756,7 +686,6 @@ class STPe(nn.Module):
         a5sum=a5_pam+a5_cam 
         fused_feature = self.feature_fusion(a5sum, global_feature)
         a_5 = self.se(fused_feature) 
-        c5=self.cbam(c5_enhance)
         H5 = self.global_local_fusion1(self.gap(c5), c5)
         E4 = self.relu(self.Conv5(H5) + c44)
         E4 = self.Elevate_Merge1(E4, H5) 
