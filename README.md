@@ -2,7 +2,7 @@
 
 STPe: Stratified Trio-dimensional Pathway Encoding Framework
 
-Minhong Sun, Han Yang, Jian Huang, Yihao Guo, Gaopeng Huang, Xuanbin Chen, Duanpo Wu, Shaowei Jiang, Xiaoshuai Zhang, Hong He, Xingru Huang, and Guan Gui
+Minhong Sun, Han Yang, Tianyun Zhang, Jian Huang, Yihao Guo, Gaopeng Huang, Xuanbin Chen, Duanpo Wu, Shaowei Jiang, Xiaoshuai Zhang, Hong He, Xingru Huang, and Guan Gui
 
 Hangzhou Dianzi University IMOP-lab
 
